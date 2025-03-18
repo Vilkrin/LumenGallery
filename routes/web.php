@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PhotoController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -19,4 +21,16 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+// Admin Dashboard - Grouping routes under 'admin' middleware and prefix for organization
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+
+    // Dashboard Route
+    Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
+
+    // Gallery
+    Route::get('/gallery', [PhotoController::class, 'gallery'])->name('gallery.index');
+    Route::get('/gallery/upload', [PhotoController::class, 'uploadImage'])->name('gallery.upload');
+});
+
+
+require __DIR__ . '/auth.php';
