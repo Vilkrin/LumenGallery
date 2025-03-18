@@ -13,7 +13,12 @@
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="home" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.group expandable :expanded="false" heading="Gallery" class="hidden lg:grid">
+                        <flux:navlist.item href="#">View Gallery</flux:navlist.item>
+                        <flux:navlist.item href="#">Add Photos</flux:navlist.item>
+                        <flux:navlist.item href="#">Manage Albums</flux:navlist.item>
+                    </flux:navlist.group>
                 </flux:navlist.group>
             </flux:navlist>
 

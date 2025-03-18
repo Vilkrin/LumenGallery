@@ -17,6 +17,14 @@ class PhotoController extends Controller
     }
 
     /**
+     * Display a listing of the resource in the dashboard.
+     */
+    public function gallery()
+    {
+        return view('admin.gallery.index');
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

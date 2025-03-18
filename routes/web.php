@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\PhotoController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -22,10 +23,17 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Admin Dashboard - Grouping routes under 'admin' middleware and prefix for organization
-Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth', 'verified')->group(function () {
 
     // Dashboard Route
     Route::get('/', [DashboardController::class, 'dashboard'])->name('dashboard');
+
+    // User Management
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/create', [UserController::class, 'createUser'])->name('users.create');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
 
     // Gallery
     Route::get('/gallery', [PhotoController::class, 'gallery'])->name('gallery.index');
