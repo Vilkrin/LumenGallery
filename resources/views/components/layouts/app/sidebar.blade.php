@@ -14,6 +14,7 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('admin.dashboard')" :current="request()->routeIs('admin.dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="user-group" :href="route('admin.users.index')" :current="request()->routeIs('admin.users.index')" wire:navigate>{{ __('User Management') }}</flux:navlist.item>
                     <flux:navlist.group expandable :expanded="false" heading="Gallery" class="hidden lg:grid">
                         <flux:navlist.item href="#">View Gallery</flux:navlist.item>
                         <flux:navlist.item href="#">Add Photos</flux:navlist.item>
@@ -79,6 +80,36 @@
                 </flux:menu>
             </flux:dropdown>
         </flux:sidebar>
+
+        <flux:header container class="bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
+            <flux:navbar class="-mb-px max-lg:hidden">
+                <flux:navbar.item icon="home" href="#" current>Home</flux:navbar.item>
+                <flux:navbar.item icon="inbox" badge="12" href="#">Inbox</flux:navbar.item>
+                <flux:navbar.item icon="document-text" href="#">Documents</flux:navbar.item>
+                <flux:navbar.item icon="calendar" href="#">Calendar</flux:navbar.item>
+    
+                <flux:separator vertical variant="subtle" class="my-2"/>
+    
+                <flux:dropdown class="max-lg:hidden">
+                    <flux:navbar.item icon-trailing="chevron-down">Favorites</flux:navbar.item>
+    
+                    <flux:navmenu>
+                        <flux:navmenu.item href="#">Marketing site</flux:navmenu.item>
+                        <flux:navmenu.item href="#">Android app</flux:navmenu.item>
+                        <flux:navmenu.item href="#">Brand guidelines</flux:navmenu.item>
+                    </flux:navmenu>
+                </flux:dropdown>
+            </flux:navbar>
+
+            <flux:spacer />
+            
+            <flux:navbar class="mr-4">
+                <flux:navbar.item icon="magnifying-glass" href="#" label="Search" />
+                <flux:navbar.item class="max-lg:hidden" icon="cog-6-tooth" href="#" label="Settings" />
+                <flux:navbar.item class="max-lg:hidden" icon="information-circle" href="#" label="Help" />
+                <flux:button x-data x-on:click="$flux.dark = ! $flux.dark" icon="moon" variant="subtle" aria-label="Toggle dark mode" />
+            </flux:navbar>
+        </flux:header>
 
         <!-- Mobile User Menu -->
         <flux:header class="lg:hidden">
