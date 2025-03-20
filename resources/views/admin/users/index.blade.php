@@ -20,7 +20,7 @@
                 
                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
                     <!-- Roles & Permissions Button -->
-                    <flux:button href="#" icon="plus">Roles & Permissions</flux:button>
+                    <flux:button href="{{ route('admin.users.roles') }}" icon="plus">Roles & Permissions</flux:button>
                     <!-- Add User Button -->
                     <flux:modal.trigger name="add-user">
                         <flux:button icon="user-plus">Add User</flux:button>
@@ -34,8 +34,8 @@
             <x-table.heading>Email</x-table.heading>
             <x-table.heading>Email Verified</x-table.heading>
             <x-table.heading>Account Created</x-table.heading>
+            <x-table.heading>Status</x-table.heading>
             <x-table.heading>Role</x-table.heading>
-            <x-table.heading>Group</x-table.heading>
             <x-table.heading>2fa Status</x-table.heading>
             <x-table.heading>Actions</x-table.heading>
         </x-slot>
@@ -49,7 +49,7 @@
                 <x-table.cell>{{ $user->email_verified_at }}</x-table.cell>
                 <x-table.cell>{{ $user->created_at }}</x-table.cell>
                 <x-table.cell>Soon</x-table.cell>
-                <x-table.cell>Soon</x-table.cell>
+                <x-table.cell>{{ $user->getRoleNames()->implode(', ') }}</x-table.cell>
                 <x-table.cell>{{ $user->two_factor_confirmed_at }}</x-table.cell>
                 <x-table.cell>
                     <div class="flex items-center space-x-4">
@@ -106,8 +106,8 @@
                 <flux:button variant="ghost">Cancel</flux:button>
             </flux:modal.close>
 
-             <flux:button variant="danger" wire:click="delete({{ $user->id }})"
-                wire:click="delete">Delete User</flux:button>
+             <flux:button variant="danger" wire:click="deleteUser({{ $user->id }})"
+                >Delete User</flux:button>
         </div>
     </div>
 </flux:modal>
