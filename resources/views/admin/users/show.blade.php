@@ -1,6 +1,6 @@
 <x-layouts.app :title="__('Dashboard')">
-  <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-    <section class="max-w-4xl mx-auto p-6 shadow-lg rounded-lg">
+
+    <section class="max-w-4xl mx-auto p-6">
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-4xl w-full p-8">
           <div class="flex flex-col md:flex-row">
               <div class="md:w-1/3 text-center mb-8 md:mb-0">
@@ -54,5 +54,5 @@
           </div>
       </div>
     </section>
-  </div>
+
 </x-layouts.app>

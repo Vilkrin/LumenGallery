@@ -1,5 +1,5 @@
 <x-layouts.app :title="__('Create User')">
-  <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+
     <h2 class="text-2xl font-semibold mb-4">Edit User</h2>
     <form action="/admin/users/update" method="POST" enctype="multipart/form-data" class="space-y-4">
         <div class="flex items-center space-x-4">
@@ -39,5 +39,5 @@
             <a href="/admin/users" class="text-gray-600 dark:text-gray-300 hover:underline">Cancel</a>
         </div>
     </form>
-  </div>
+
 </x-layouts.app>

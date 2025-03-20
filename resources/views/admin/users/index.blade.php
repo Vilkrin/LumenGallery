@@ -19,16 +19,12 @@
                 </div>
                 
                 <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0">
-                    <!-- Roles, Groups & Permissions Button -->
-                    <button wire:click="addPerms" type="button" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-hidden dark:focus:ring-primary-800">
-                        <!-- Add Icon -->
-                        <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                        </svg>
-                        Roles, Groups & Permissions
-                    </button>
+                    <!-- Roles & Permissions Button -->
+                    <flux:button href="#" icon="plus">Roles & Permissions</flux:button>
                     <!-- Add User Button -->
-                    <flux:button href="{{ route('admin.users.create') }}" icon="user-plus">Create User</flux:button>
+                    <flux:modal.trigger name="add-user">
+                        <flux:button icon="user-plus">Add User</flux:button>
+                    </flux:modal.trigger>
                 </div>
             </div>
         </x-slot>
@@ -58,22 +54,24 @@
                 <x-table.cell>
                     <div class="flex items-center space-x-4">
                         <!-- View Button -->
-                        <a href="{{ route('admin.users.show', $user->id) }}">
-                            <button class="rounded-lg cursor-pointer"><span class="fa-regular fa-eye px-2"></span></button>
-                        </a>
+                            <flux:button class="cursor-pointer" href="{{ route('admin.users.show', $user->id) }}" icon="eye">View</flux:button>
 
-                        <!-- Edit Button -->
-                        <a href="{{ route('admin.users.edit', $user->id) }}">
-                            <button class="rounded-lg cursor-pointer"><span class="fa-solid fa-pen-to-square px-2"></span></button>
-                        </a>
+                            <!-- Edit Button -->
+                            <flux:button class="cursor-pointer" href="{{ route('admin.users.edit', $user->id) }}" icon="pencil-square">Edit</flux:button>
 
                         <!-- Delete Button -->
-                        <form method="POST" action="{{ route('admin.users.delete', $user->id) }}" onsubmit="return confirm('Are you sure?');">
+                        {{-- <form method="POST" action="{{ route('admin.users.delete', $user->id) }}">
                             @csrf
                             @method('DELETE')
-                            <button class="rounded-lg cursor-pointer" type="submit"><span class="fa-solid fa-trash px-2"></span></button>
+                            <flux:modal.trigger name="delete-user-{{ $user->id }}">
+                                <flux:button class="cursor-pointer" icon="trash" variant="danger">Delete</flux:button>
+                            </flux:modal.trigger>
                            
-                        </form>
+                        </form> --}}
+
+                        <flux:modal.trigger name="delete-user-{{ $user->id }}">
+                            <flux:button class="cursor-pointer" icon="trash" variant="danger">Delete</flux:button>
+                        </flux:modal.trigger>
                     </div>
                 </x-table.cell>
             </x-table.row>
@@ -87,4 +85,86 @@
         {{ $users->links() }}
     </div>
   </div>
+
+
+
+<flux:modal name="delete-user-{{ $user->id }}" class="min-w-[22rem]">
+    <div class="space-y-6">
+        <div>
+            <flux:heading size="lg">Delete User?</flux:heading>
+
+            <flux:subheading>
+                <p>You're about to delete <strong>{{ $user->name }}</strong>.</p>
+                <p>This action cannot be reversed.</p>
+            </flux:subheading>
+        </div>
+
+        <div class="flex gap-2">
+            <flux:spacer />
+
+            <flux:modal.close>
+                <flux:button variant="ghost">Cancel</flux:button>
+            </flux:modal.close>
+
+             <flux:button variant="danger" wire:click="delete({{ $user->id }})"
+                wire:click="delete">Delete User</flux:button>
+        </div>
+    </div>
+</flux:modal>
+
+<flux:modal name="add-user" class="md:w-96">
+    <form method="post" action="{{ route('admin.users.store') }}" enctype="multipart/form-data">
+        @csrf
+    <div class="space-y-6">
+        <div>
+            <flux:heading size="lg">Create User</flux:heading>
+            <flux:subheading>Adding a new user.</flux:subheading>
+        </div>
+
+        <div>
+            <flux:input wire:model="name" label="Username" />
+        </div>
+        <div>
+            <flux:input class="mb-6" label="Email" wire:model="email" />
+        </div>
+        <div class="mb-6 flex *:w-1/2 gap-4">
+            <flux:input type="password" label="Password" />
+            <flux:input type="password" label="Confirm password" wire:model="password_confirmation" />
+        </div>
+        <div class="mb-6 flex *:w-1/2 gap-4">
+            {{-- <flux:select variant="listbox" placeholder="Select role...">
+                <flux:select.option>
+                    <div class="flex items-center gap-2">
+                        <flux:icon.shield-check variant="mini" class="text-zinc-400" /> Owner
+                    </div>
+                </flux:select.option>
+            
+                <flux:select.option>
+                    <div class="flex items-center gap-2">
+                        <flux:icon.key variant="mini" class="text-zinc-400" /> Administrator
+                    </div>
+                </flux:select.option>
+            
+                <flux:select.option>
+                    <div class="flex items-center gap-2">
+                        <flux:icon.user variant="mini" class="text-zinc-400" /> Member
+                    </div>
+                </flux:select.option>
+            
+                <flux:select.option>
+                    <div class="flex items-center gap-2">
+                        <flux:icon.eye variant="mini" class="text-zinc-400" /> Viewer
+                    </div>
+                </flux:select.option>
+            </flux:select> --}}
+        </div>
+
+        <div class="flex">
+            <flux:spacer />
+
+            <flux:button type="submit" variant="primary">{{ __('Create User') }}</flux:button>
+        </div>
+    </div>
+    </form>
+</flux:modal>
 </x-layouts.app>

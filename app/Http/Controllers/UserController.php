@@ -21,9 +21,9 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(User $user)
+    public function create()
     {
-        return view('admin.users.create', compact('user'));
+        return view('admin.users.create');
     }
 
     /**
@@ -66,7 +66,12 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'required|min:6',
         ]);
+
+        if (isset($data['avatar'])) {
+            $user->addMediaFromRequest('avatar')->toMediaCollection('avatars');
+        }
 
         $user->update($validated);
 
